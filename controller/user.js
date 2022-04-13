@@ -68,5 +68,20 @@ const updateUser = async (req, res) => {
     });
   }
 };
+const deleteUser = async (req, res) => {
+  let newUser;
+  try {
+    const response = await userModel.findByIdAndDelete({ _id: req.params.id });
+    res.status(200).json({
+      message: "User deleted successfully",
+    });
+  } catch (err) {
+    res.status(500).json({
+      errors: {
+        msg: err.message,
+      },
+    });
+  }
+};
 
-module.exports = { getUser, addUser, updateUser };
+module.exports = { getUser, addUser, updateUser, deleteUser };
