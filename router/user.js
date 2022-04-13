@@ -11,12 +11,17 @@ const {
   getUserById,
 } = require("../controller/user");
 
+const {
+  addUservalidator,
+  addUserValidationHandler,
+} = require("../middleware/user/userValidation");
+
 //to retrieve a list of users
 route.get("/", getUser);
 //to retrieve a user,
 route.get("/:id", getUserById);
 //create a new user
-route.post("/", addUser);
+route.post("/", addUservalidator, addUserValidationHandler, addUser);
 //to modify an existing user record
 route.put("/:id", updateUser);
 //to remove a user
