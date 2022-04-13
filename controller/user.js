@@ -36,6 +36,27 @@ const addUser = async (req, res) => {
     res.status(200).json({
       message: "User was added successfully",
     });
+  } catch (err) {
+    res.status(500).json({
+      errors: {
+        msg: err.message,
+      },
+    });
+  }
+};
+
+const updateUser = async (req, res) => {
+  let newUser;
+  try {
+    const response = await userModel.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        $set: req.body,
+      }
+    );
+    res.status(200).json({
+      message: "User was update successfully",
+    });
     // const hashPass = await bcrypt.hash(req.body.password, salt);
 
     // res.send(salt);
@@ -48,4 +69,4 @@ const addUser = async (req, res) => {
   }
 };
 
-module.exports = { getUser, addUser };
+module.exports = { getUser, addUser, updateUser };
