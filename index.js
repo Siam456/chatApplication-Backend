@@ -9,6 +9,13 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
+//internal export
+
+const userRouter = require("./router/user");
+
+//routes
+app.use("/user", userRouter);
+
 io.on("connection", (socket) => {
   socket.on("chat message", (msg) => {
     io.emit("chat message", "siam: " + msg);
