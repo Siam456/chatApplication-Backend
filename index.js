@@ -22,6 +22,23 @@ io.on("connection", (socket) => {
   });
 });
 
+//error handler
+app.use((req, res, next) => {
+  res.status(404).send("Route not found");
+});
+
+app.use((err, req, res, next) => {
+  if (res.headersSent) {
+    next("there was an error");
+  } else {
+    if (err.message) {
+      res.status(500).send(err.message);
+    } else {
+      res.status(500).send("There was an error");
+    }
+  }
+});
+
 server.listen(5000, () => {
   console.log("listening on *:5000");
 });
