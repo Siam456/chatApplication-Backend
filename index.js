@@ -3,13 +3,13 @@ const app = express();
 
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
+require("dotenv").config();
 
 //cookie parser
 app.use(cookieParser(process.env.COOKIE_PARSER));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-require("dotenv").config();
 
 const http = require("http");
 const server = http.createServer(app);
@@ -32,9 +32,11 @@ app.get("/", (req, res) => {
 //internal export
 
 const userRouter = require("./router/user");
+const loginRoute = require("./router/login");
 
 //routes
 app.use("/user", userRouter);
+app.use("/login", loginRoute);
 
 io.on("connection", (socket) => {
   socket.on("chat message", (msg) => {

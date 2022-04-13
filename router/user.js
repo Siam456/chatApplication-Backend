@@ -21,15 +21,17 @@ const {
   validationHandler,
 } = require("../middleware/common/checkValidation.js");
 
+const auth = require("../middleware/common/auth");
+
 //to retrieve a list of users
 route.get("/", getUser);
 //to retrieve a user,
 route.get("/:id", getUserById);
 //create a new user
-route.post("/", addUservalidator, validationHandler, addUser);
+route.post("/", auth, addUservalidator, validationHandler, addUser);
 //to modify an existing user record
-route.put("/:id", updateUservalidator, validationHandler, updateUser);
+route.put("/:id", auth, updateUservalidator, validationHandler, updateUser);
 //to remove a user
-route.delete("/:id", deleteUser);
+route.delete("/:id", auth, deleteUser);
 
 module.exports = route;
