@@ -78,28 +78,12 @@
       });
 
       socket.on("chat message", function (msg) {
+        console.log(msg);
         var item = document.createElement("li");
-        item.textContent = msg;
+        item.textContent = msg.msg;
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
       });
-    </script>
-    <script>
-      var user = document.getElementById("user");
-      let userList;
-      fetch("http://localhost:5000/user")
-        .then((response) => {
-          return response.json();
-        })
-        .then((res) => {
-          userList = res.data;
-          userList.forEach((element) => {
-            var item = document.createElement("li");
-            item.textContent = element.name;
-            user.appendChild(item);
-            console.log(item);
-          });
-        });
     </script>
   </body>
 </html>

@@ -39,6 +39,7 @@ const postLogin = async (req, res) => {
         maxAge: process.env.JWT_EXPIRE,
         signed: true,
       });
+      res.locals.loogedInUser = userObj;
       res.json({
         msg: "Login Successfully",
       });
