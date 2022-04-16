@@ -33,15 +33,17 @@ app.get("/", (req, res) => {
 
 const userRouter = require("./router/user");
 const loginRoute = require("./router/login");
+const inboxRoute = require("./router/inbox");
 
 //routes
 app.use("/user", userRouter);
 app.use("/login", loginRoute);
+app.use("/inbox", inboxRoute);
 
-io.on("connection", (socket) => {
-  socket.on("chat message", (msg) => {
-    io.emit("chat message", "siam: " + msg);
-  });
+global.io = io;
+
+global.io.on("connection", (socket) => {
+  console.log("connected");
 });
 
 //error handler

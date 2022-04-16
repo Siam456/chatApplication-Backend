@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Socket.IO chat</title>
+
     <style>
       body {
         margin: 0;
@@ -60,7 +61,6 @@
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
     </form>
-
     <script src="/socket.io/socket.io.js"></script>
     <script>
       var socket = io();
@@ -78,8 +78,9 @@
       });
 
       socket.on("chat message", function (msg) {
+        console.log(msg);
         var item = document.createElement("li");
-        item.textContent = msg;
+        item.textContent = msg.msg;
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
       });
