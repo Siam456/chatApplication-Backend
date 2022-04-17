@@ -69,18 +69,59 @@
       var form = document.getElementById("form");
       var input = document.getElementById("input");
 
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        if (input.value) {
-          socket.emit("chat message", input.value);
-          input.value = "";
+      const getData = () => {
+        fetch("http://localhost:5000/inbox")
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data.response);
+            data.response.forEach((msg) => {
+              var item = document.createElement("li");
+              item.textContent = msg.text;
+              messages.appendChild(item);
+              window.scrollTo(0, document.body.scrollHeight);
+            });
+          });
+      };
+
+      getData();
+
+      form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        console.log(input.value);
+        // prepare the form data
+        const formData = new FormData(form);
+        let receiver = {
+          name: "siam",
+          _id: "625685e093c22614078ae042",
+        };
+
+        let conversation_id = "625c4e718438311d27c1c6ac";
+        formData.append("receiver", receiver);
+        formData.append("text", input.value);
+        formData.append("conversationId", conversation_id);
+
+        for (var value of formData.values()) {
+          console.log(value);
+        }
+        // send the request to server
+        let response = await fetch("/inbox", {
+          method: "POST",
+          body: formData,
+        });
+        // get response
+        let result = await response.json();
+        if (!result.errors) {
+          console.log(result);
+          form.reset(); // reset the form
+        } else {
+          sendMessageFailureToast.showToast();
         }
       });
 
       socket.on("chat message", function (msg) {
         console.log(msg);
         var item = document.createElement("li");
-        item.textContent = msg.msg;
+        item.textContent = msg.text;
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
       });

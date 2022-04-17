@@ -22,6 +22,6 @@ const conversationSchema = mongoose.Schema(
   }
 );
 
-const msgModel = mongoose.model("message", conversationSchema);
+const cModel = mongoose.model("conversation", conversationSchema);
 
-module.exports = msgModel;
+module.exports = cModel;

@@ -1,17 +1,58 @@
 const conversationModel = require("../model/conversation");
+const messageModel = require("../model/message");
 
-const getMsg = (req, res) => {
-  res.send("siam");
+const getMsg = async (req, res) => {
+  try {
+    const response = await messageModel.find({});
+    if (response) {
+      res.status(200).json({
+        response,
+      });
+    } else {
+      res.status(500).json({
+        errors: {
+          msg: "There was an error",
+        },
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      errors: {
+        msg: err.message,
+      },
+    });
+  }
 };
-const createMessage = (req, res) => {
-  res.send(req.body.text);
+const createMessage = async (req, res) => {
+  console.log(req.body);
+  const message = new messageModel({
+    text: req.body.text,
+    sender: req.user,
+    conversation_id: req.body.conversation_id,
+
+    receiver: req.body.receiver,
+  });
+
+  const response = await message.save();
 
   global.io.emit("chat message", {
-    msg: req.body.text,
-    sender: {
-      user: req.user,
-    },
+    text: req.body.text,
+    sender: req.user,
+    conversation_id: req.body.conversation_id,
+
+    receiver: req.body.receiver,
   });
+  if (response) {
+    res.status(200).json({
+      response,
+    });
+  } else {
+    res.status(500).json({
+      errors: {
+        msg: "There was an error",
+      },
+    });
+  }
 };
 const getConversation = async (req, res) => {
   try {
@@ -38,7 +79,6 @@ const getConversation = async (req, res) => {
 
 const createConversation = async (req, res) => {
   try {
-    console.log(req.user);
     const conversation = new conversationModel({
       creator: {
         id: req.user._id,

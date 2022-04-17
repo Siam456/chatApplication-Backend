@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+var bodyParser = require("body-parser");
+
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
@@ -10,6 +12,9 @@ app.use(cookieParser(process.env.COOKIE_PARSER));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// for parsing application/json
+app.use(bodyParser.json());
 
 const http = require("http");
 const server = http.createServer(app);
