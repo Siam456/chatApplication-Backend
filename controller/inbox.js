@@ -12,4 +12,5 @@ const createMessage = (req, res) => {
   });
 };
 
+
 module.exports = { getMsg, createMessage };
