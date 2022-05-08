@@ -23,14 +23,26 @@ const {
 
 const auth = require("../middleware/common/auth");
 
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+
+const avaterUpload = require("../middleware/user/avatarUpload");
+
 //to retrieve a list of users
 route.get("/", getUser);
 //to retrieve a user,
-route.get("/:id", getUserById);
+route.get("/:id", auth, getUserById);
 //create a new user
-route.post("/", addUservalidator, validationHandler, addUser);
+route.post("/", upload.none(), addUservalidator, validationHandler, addUser);
 //to modify an existing user record
-route.put("/:id", auth, updateUservalidator, validationHandler, updateUser);
+route.put(
+  "/:id",
+  auth,
+  avaterUpload,
+  updateUservalidator,
+  validationHandler,
+  updateUser
+);
 //to remove a user
 route.delete("/:id", auth, deleteUser);
 
