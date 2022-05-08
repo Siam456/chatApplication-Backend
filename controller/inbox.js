@@ -24,13 +24,22 @@ const getMsg = async (req, res) => {
   }
 };
 const createMessage = async (req, res) => {
-  console.log(req.body);
+  let attachments = null;
+
+  if (req.files && req.files.length > 0) {
+    attachments = [];
+
+    req.files.forEach((file) => {
+      attachments.push(file.filename);
+    });
+  }
   const message = new messageModel({
     text: req.body.text,
     sender: req.user,
     conversation_id: req.body.conversation_id,
 
     receiver: req.body.receiver,
+    attachment: attachments,
   });
 
   const response = await message.save();

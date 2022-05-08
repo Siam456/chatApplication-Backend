@@ -1,6 +1,7 @@
-const path = require("path");
 const bcrypt = require("bcrypt");
 const userModel = require("../model/user.js");
+const path = require("path");
+const { unlink } = require("fs");
 // require('../controller/')
 
 //**********to retrieve a list of users
@@ -105,6 +106,17 @@ const updateUser = async (req, res) => {
     }
 
     if (response) {
+      if (response.avatar !== null) {
+        unlink(
+          path.join(
+            __dirname,
+            `/../../clint/public/uploads/avater/${response.avatar}`
+          ),
+          (err) => {
+            if (err) console.log(err);
+          }
+        );
+      }
       res.status(200).json({
         message: "User was update successfully",
       });

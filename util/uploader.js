@@ -7,10 +7,11 @@ function uploader(
   subfolder_path,
   allowed_file_types,
   max_file_size,
+  max_number_of_files,
   error_msg
 ) {
   // File upload folder
-  const UPLOADS_FOLDER = `${__dirname}/../../clint/public/uploads/`;
+  const UPLOADS_FOLDER = `${__dirname}/../../clint/public/uploads/${subfolder_path}`;
 
   // define the storage
   const storage = multer.diskStorage({
@@ -39,10 +40,18 @@ function uploader(
       fileSize: max_file_size,
     },
     fileFilter: (req, file, cb) => {
-      if (allowed_file_types.includes(file.mimetype)) {
-        cb(null, true);
+      if (req.files.length > max_number_of_files) {
+        cb(
+          createError(
+            `Maximum ${max_number_of_files} files are allowed to ${subfolder_path} upload!`
+          )
+        );
       } else {
-        cb(createError(error_msg));
+        if (allowed_file_types.includes(file.mimetype)) {
+          cb(null, true);
+        } else {
+          cb(createError(error_msg));
+        }
       }
     },
   });

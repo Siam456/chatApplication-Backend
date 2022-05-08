@@ -1,11 +1,11 @@
 const uploader = require("../../util/uploader");
 
-const avaterUpload = (req, res, next) => {
+const attachmentUpload = (req, res, next) => {
   const upload = uploader(
-    "/avater",
+    "/attachment",
     ["image/jpeg", "image/jpg", "image/png"],
-    2000000,
-    1,
+    10000000,
+    5,
     "Only .jpg, .jpeg, .png allowed!!"
   );
 
@@ -24,4 +24,4 @@ const avaterUpload = (req, res, next) => {
   });
 };
 
-module.exports = avaterUpload;
+module.exports = attachmentUpload;

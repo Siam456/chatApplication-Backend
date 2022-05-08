@@ -14,7 +14,10 @@ const validationHandler = function (req, res, next) {
     if (req.files.length > 0) {
       const { filename } = req.files[0];
       unlink(
-        path.join(__dirname, `/../../../clint/public/uploads/${filename}`),
+        path.join(
+          __dirname,
+          `/../../../clint/public/uploads/avater/${filename}`
+        ),
         (err) => {
           if (err) console.log(err);
         }
