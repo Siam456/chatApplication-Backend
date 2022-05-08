@@ -82,13 +82,27 @@ const addUser = async (req, res) => {
 //**********to modify an existing user record
 const updateUser = async (req, res) => {
   let newUser;
+  // console.log(req.files[0].filename);
   try {
-    const response = await userModel.findByIdAndUpdate(
-      { _id: req.params.id },
-      {
-        $set: req.body,
-      }
-    );
+    let response;
+    if (req.files.length > 0) {
+      response = await userModel.findByIdAndUpdate(
+        { _id: req.params.id },
+        {
+          $set: {
+            ...req.body,
+            avatar: req.files[0].filename,
+          },
+        }
+      );
+    } else {
+      response = await userModel.findByIdAndUpdate(
+        { _id: req.params.id },
+        {
+          $set: req.body,
+        }
+      );
+    }
 
     if (response) {
       res.status(200).json({
